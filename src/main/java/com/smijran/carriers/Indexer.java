@@ -7,6 +7,7 @@ package com.smijran.carriers;
  * @see java.util.stream.IntStream
  * @since 1.0
  */
+@FunctionalInterface
 public interface Indexer<V> {
     /**
      * Method should return a index of given value.
