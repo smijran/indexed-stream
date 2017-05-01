@@ -45,7 +45,7 @@ public interface IndexedStream<V> extends BaseStream<V, IndexedStream<V>> {
 
     void forEach(Consumer<V> consumer);
 
-    void forEach(IntBiConsumer<V> consumer);
+    void forEach(IndexedConsumer<V> consumer);
 
     Stream<IndexCarrier<V>> asIndexedStream();
 
