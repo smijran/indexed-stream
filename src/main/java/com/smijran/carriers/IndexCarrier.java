@@ -9,7 +9,7 @@ import java.util.function.Predicate;
 /**
  * Simple class that bounds together index and value. Will be useful in next steps of this project.
  *
- * @author Konrad Sząłkowski
+ * @author Konrad Szałkowski
  * @see java.util.stream.IntStream
  * @since 1.0
  */
