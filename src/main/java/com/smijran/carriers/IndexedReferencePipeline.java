@@ -1,6 +1,8 @@
 package com.smijran.carriers;
 
 import java.util.Objects;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collector;
 
 /**
@@ -43,8 +45,70 @@ abstract class IndexedReferencePipeline<INDEX, VALUE_IN, VALUE_OUT>
     }
 
     @Override
+    public IndexedStream<INDEX, VALUE_OUT> filter(IndexedPredicate<INDEX, ? super VALUE_OUT> valuePredicate) {
+        Objects.requireNonNull(valuePredicate);
+        return new IndexedReferencePipeline.StatelessOp<INDEX, VALUE_OUT, VALUE_OUT>(this) {
+            @Override
+            IndexedSink<INDEX, VALUE_OUT> opWrapSink(IndexedSink<INDEX, VALUE_OUT> sink) {
+                return new IndexedSink.IndexedChainedReference<INDEX, VALUE_OUT, VALUE_OUT>(sink) {
+                    @Override
+                    public void begin(long size) {
+                        downstream.begin(-1);
+                    }
+
+                    @Override
+                    public void accept(INDEX index, VALUE_OUT u) {
+                        if (valuePredicate.test(index, u))
+                            downstream.accept(index, u);
+                    }
+                };
+            }
+        };
+    }
+
+
+    @Override
+    public IndexedStream<INDEX, VALUE_OUT> filter(Predicate<? super VALUE_OUT> valuePredicate) {
+        Objects.requireNonNull(valuePredicate);
+        return new IndexedReferencePipeline.StatelessOp<INDEX, VALUE_OUT, VALUE_OUT>(this) {
+            @Override
+            IndexedSink<INDEX, VALUE_OUT> opWrapSink(IndexedSink<INDEX, VALUE_OUT> sink) {
+                return new IndexedSink.IndexedChainedReference<INDEX, VALUE_OUT, VALUE_OUT>(sink) {
+                    @Override
+                    public void begin(long size) {
+                        downstream.begin(-1);
+                    }
+
+                    @Override
+                    public void accept(INDEX index, VALUE_OUT u) {
+                        if (valuePredicate.test(u))
+                            downstream.accept(index, u);
+                    }
+                };
+            }
+        };
+    }
+
+    @Override
     @SuppressWarnings("unchecked")
-    public <R> IndexedStream<INDEX, R> map(IndexedFunction<INDEX, VALUE_OUT, R> mapper) {
+    public <R> IndexedStream<INDEX, R> map(Function<? super VALUE_OUT, ? extends R> mapper) {
+        Objects.requireNonNull(mapper);
+        return new IndexedReferencePipeline.StatelessOp<INDEX, VALUE_OUT, R>(this) {
+            @Override
+            IndexedSink<INDEX, VALUE_OUT> opWrapSink(IndexedSink<INDEX, R> sink) {
+                return new IndexedSink.IndexedChainedReference<INDEX, VALUE_OUT, R>(sink) {
+                    @Override
+                    public void accept(INDEX index, VALUE_OUT u) {
+                        downstream.accept(index, mapper.apply(u));
+                    }
+                };
+            }
+        };
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <R> IndexedStream<INDEX, R> map(IndexedFunction<INDEX, ? super VALUE_OUT, ? extends R> mapper) {
         Objects.requireNonNull(mapper);
         return new IndexedReferencePipeline.StatelessOp<INDEX, VALUE_OUT, R>(this) {
             @Override
