@@ -16,7 +16,7 @@ public interface IndexedStream< INDEX, VALUE >extends AutoCloseable
 {
     static < V > IndexedStream< Integer, V > of( V ... values )
     {
-        return new IndexedReferencePipeline<>( IndexedSpliterators.spliterator( values ) );
+        return new IndexedReferencePipeline.Head<>( IndexedSpliterators.spliterator( values ) );
     }
 
     < R > IndexedStream< INDEX, R > map( IndexedFunction< INDEX, VALUE, R > mapper );
