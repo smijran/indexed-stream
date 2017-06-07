@@ -8,16 +8,16 @@ import java.util.Objects;
 public class IndexedSpliterators
 {
 
-    public static < V > IndexedSpliterator< Integer, V > spliterator( Object[] array )
+    public static < V > IndexedSpliterator< Integer, V > spliterator( V[] array )
     {
-        return new IndexedSpliterators.ArrayIndexedSpliterator< V >( Objects.requireNonNull( array ) );
+        return new IndexedSpliterators.ArrayIndexedSpliterator<>(Objects.requireNonNull(array));
     }
 
-    public static < V > IndexedSpliterator< Integer, V > spliterator( Object[] array, int fromIndex,
+    public static < V > IndexedSpliterator< Integer, V > spliterator( V[] array, int fromIndex,
         int toIndex )
     {
         checkFromToBounds( Objects.requireNonNull( array ).length, fromIndex, toIndex );
-        return new IndexedSpliterators.ArrayIndexedSpliterator< V >( array, fromIndex, toIndex );
+        return new IndexedSpliterators.ArrayIndexedSpliterator<>(array, fromIndex, toIndex);
     }
 
     private static void checkFromToBounds( int arrayLength, int origin, int fence )

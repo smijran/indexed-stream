@@ -7,15 +7,24 @@ import java.util.stream.Collector;
 import java.util.stream.Stream;
 
 /**
- *
- * @param <I> Index type.
- * @param <V> Value type.
+ * @param <INDEX>
+ *            Index type.
+ * @param <VALUE>
+ *            Value type.
  */
-public interface IndexedStream<I, V> extends AutoCloseable {
+public interface IndexedStream< INDEX, VALUE >extends AutoCloseable
+{
+    static < V > IndexedStream< Integer, V > of( V ... values )
+    {
+        return new IndexedReferencePipeline<>( IndexedSpliterators.spliterator( values ) );
+    }
+
+    < R > IndexedStream< INDEX, R > map( IndexedFunction< INDEX, VALUE, R > mapper );
+
+    < R, A > R collect( Collector< ? super VALUE, A, R > collector );
 
     /**
-     * Closes this stream, causing all close handlers for this stream pipeline
-     * to be called.
+     * Closes this stream, causing all close handlers for this stream pipeline to be called.
      *
      * @see AutoCloseable#close()
      */
