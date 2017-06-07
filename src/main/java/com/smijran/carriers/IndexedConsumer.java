@@ -1,9 +1,16 @@
 package com.smijran.carriers;
 
 /**
- * Created by konrad on 05.03.17.
+ * Interface of consumer.
+ * @param <I> Index type.
+ * @param <V> Value type.
  */
 @FunctionalInterface
-public interface IndexedConsumer<V> {
-    void accept(int first, V value);
+public interface IndexedConsumer<I, V> {
+    /**
+     * Transform index and value.
+     * @param index Index.
+     * @param value Value.
+     */
+    void accept(I index, V value);
 }
