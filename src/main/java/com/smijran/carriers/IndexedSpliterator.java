@@ -14,4 +14,11 @@ public interface IndexedSpliterator< I, V >
         }
         while( tryAdvance( action ) );
     }
+
+    long estimateSize();
+
+    default long getExactSizeIfKnown()
+    {
+        return -1L;
+    }
 }

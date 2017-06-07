@@ -97,5 +97,17 @@ public class IndexedSpliterators
                 while( ++i < hi );
             }
         }
+
+        @Override
+        public long estimateSize()
+        {
+            return objects.length;
+        }
+
+        @Override
+        public long getExactSizeIfKnown()
+        {
+            return objects.length;
+        }
     }
 }
