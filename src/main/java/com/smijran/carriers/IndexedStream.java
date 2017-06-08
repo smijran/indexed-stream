@@ -1,5 +1,7 @@
 package com.smijran.carriers;
 
+import java.util.Iterator;
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -16,6 +18,16 @@ public interface IndexedStream< INDEX, VALUE >extends AutoCloseable
     static < V > IndexedStream< Integer, V > of( V ... values )
     {
         return new IndexedReferencePipeline.Head<>( IndexedSpliterators.spliterator( values ) );
+    }
+
+    static < V > IndexedStream< Integer, V > of( List< V > aList )
+    {
+        return new IndexedReferencePipeline.Head<>( IndexedSpliterators.spliterator( aList ) );
+    }
+
+    static < I, V > IndexedStream< I, V > of( Iterator< I > indexIterator, Iterator< V > valueIterator )
+    {
+        return new IndexedReferencePipeline.Head<>( new TwoWaySpliterator<>( indexIterator, valueIterator ) );
     }
 
     IndexedStream< INDEX, VALUE > filter( IndexedPredicate< INDEX, ? super VALUE > valuePredicate );
