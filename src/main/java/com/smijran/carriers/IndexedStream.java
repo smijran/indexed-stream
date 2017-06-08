@@ -62,6 +62,18 @@ public interface IndexedStream< INDEX, VALUE >extends AutoCloseable
 
     Optional<VALUE> findAny();
 
+    boolean anyMatch(Predicate<? super VALUE> predicate);
+
+    boolean allMatch(Predicate<? super VALUE> predicate);
+
+    boolean noneMatch(Predicate<? super VALUE> predicate);
+
+    boolean anyMatch(IndexedPredicate<INDEX, ? super VALUE> predicate);
+
+    boolean allMatch(IndexedPredicate<INDEX, ? super VALUE> predicate);
+
+    boolean noneMatch(IndexedPredicate<INDEX, ? super VALUE> predicate);
+
     void forEach(Consumer< ? super VALUE > consumer );
 
     void forEach( IndexedConsumer< INDEX, ? super VALUE > consumer );

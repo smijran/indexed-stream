@@ -17,6 +17,126 @@ public class IndexedStreamTest
 {
 
     @Test
+    public void testNoneMatch() throws Exception
+    {
+        // Given
+        boolean result = IndexedStream.of( 1, 2, 3 ).noneMatch( ( a ) -> a.equals( 4 ) );
+
+        // Then
+        assertThat( result ).isTrue();
+    }
+
+    @Test
+    public void testNoneMatch2() throws Exception
+    {
+        // Given
+        boolean result = IndexedStream.of( 1, 2, 3 ).noneMatch( ( a ) -> a.equals( 3 ) );
+
+        // Then
+        assertThat( result ).isFalse();
+    }
+
+    @Test
+    public void testAnyMatch() throws Exception
+    {
+        // Given
+        boolean result = IndexedStream.of( 1, 2, 3 ).anyMatch( ( a ) -> a.equals( 4 ) );
+
+        // Then
+        assertThat( result ).isFalse();
+    }
+
+    @Test
+    public void testAnyMatch2() throws Exception
+    {
+        // Given
+        boolean result = IndexedStream.of( 1, 2, 3 ).anyMatch( ( a ) -> a.equals( 3 ) );
+
+        // Then
+        assertThat( result ).isTrue();
+    }
+
+    @Test
+    public void testAllMatch() throws Exception
+    {
+        // Given
+        boolean result = IndexedStream.of( 1, 2, 3 ).allMatch( ( a ) -> a instanceof Integer );
+
+        // Then
+        assertThat( result ).isTrue();
+    }
+
+    @Test
+    public void testAllMatch2() throws Exception
+    {
+        // Given
+        boolean result = IndexedStream.of( 1, 2, 3 ).allMatch( ( a ) -> a.equals( 3 ) );
+
+        // Then
+        assertThat( result ).isFalse();
+    }
+
+    @Test
+    public void testIndexedNoneMatch() throws Exception
+    {
+        // Given
+        boolean result = IndexedStream.of( 1, 2, 3 ).noneMatch( ( index, a ) -> a.equals( 4 ) );
+
+        // Then
+        assertThat( result ).isTrue();
+    }
+
+    @Test
+    public void testIndexedNoneMatch2() throws Exception
+    {
+        // Given
+        boolean result = IndexedStream.of( 1, 2, 3 ).noneMatch( ( index, a ) -> a.equals( 3 ) );
+
+        // Then
+        assertThat( result ).isFalse();
+    }
+
+    @Test
+    public void testIndexedAnyMatch() throws Exception
+    {
+        // Given
+        boolean result = IndexedStream.of( 1, 2, 3 ).anyMatch( ( index, a ) -> a.equals( 4 ) );
+
+        // Then
+        assertThat( result ).isFalse();
+    }
+
+    @Test
+    public void testIndexedAnyMatch2() throws Exception
+    {
+        // Given
+        boolean result = IndexedStream.of( 1, 2, 3 ).anyMatch( ( index, a ) -> a.equals( 3 ) );
+
+        // Then
+        assertThat( result ).isTrue();
+    }
+
+    @Test
+    public void testIndexedAllMatch() throws Exception
+    {
+        // Given
+        boolean result = IndexedStream.of( 1, 2, 3 ).allMatch( ( index, a ) -> a instanceof Integer );
+
+        // Then
+        assertThat( result ).isTrue();
+    }
+
+    @Test
+    public void testIndexedAllMatch2() throws Exception
+    {
+        // Given
+        boolean result = IndexedStream.of( 1, 2, 3 ).allMatch( ( index, a ) -> a.equals( 3 ) );
+
+        // Then
+        assertThat( result ).isFalse();
+    }
+
+    @Test
     public void testFindFirst() throws Exception
     {
         // Given
@@ -28,13 +148,33 @@ public class IndexedStreamTest
     }
 
     @Test
+    public void testFindFirst2() throws Exception
+    {
+        // Given
+        final Optional< Integer > found = IndexedStream.of( new Integer[ 0 ] ).findFirst();
+
+        // Then
+        assertThat( found.isPresent() ).isFalse();
+    }
+
+    @Test
     public void testFindAny() throws Exception
     {
         // Given
-        final Optional< Integer > found = IndexedStream.of( 1, 2, 3 ).findFirst();
+        final Optional< Integer > found = IndexedStream.of( 1, 2, 3 ).findAny();
 
         // Then
         assertThat( found.isPresent() ).isTrue();
+    }
+
+    @Test
+    public void testFindAny2() throws Exception
+    {
+        // Given
+        final Optional< Integer > found = IndexedStream.of( new Integer[ 0 ] ).findAny();
+
+        // Then
+        assertThat( found.isPresent() ).isFalse();
     }
 
     @Test

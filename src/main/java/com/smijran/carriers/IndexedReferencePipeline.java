@@ -4,8 +4,7 @@ import java.util.Comparator;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.*;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
+import java.util.stream.*;
 
 /**
  * Created by kszalkowski on 2017-06-07.
@@ -215,6 +214,42 @@ abstract class IndexedReferencePipeline< INDEX, VALUE_IN, VALUE_OUT >
     public final Optional< VALUE_OUT > findAny()
     {
         return evaluate( FindOps.makeRef( false ) );
+    }
+
+    @Override
+    public final boolean anyMatch( Predicate< ? super VALUE_OUT > predicate )
+    {
+        return evaluate( MatchOps.makeRef( predicate, MatchOps.MatchKind.ANY ) );
+    }
+
+    @Override
+    public final boolean allMatch( Predicate< ? super VALUE_OUT > predicate )
+    {
+        return evaluate( MatchOps.makeRef( predicate, MatchOps.MatchKind.ALL ) );
+    }
+
+    @Override
+    public final boolean noneMatch( Predicate< ? super VALUE_OUT > predicate )
+    {
+        return evaluate( MatchOps.makeRef( predicate, MatchOps.MatchKind.NONE ) );
+    }
+
+    @Override
+    public final boolean anyMatch( IndexedPredicate< INDEX, ? super VALUE_OUT > predicate )
+    {
+        return evaluate( MatchOps.makeRef( predicate, MatchOps.MatchKind.ANY ) );
+    }
+
+    @Override
+    public final boolean allMatch( IndexedPredicate< INDEX, ? super VALUE_OUT > predicate )
+    {
+        return evaluate( MatchOps.makeRef( predicate, MatchOps.MatchKind.ALL ) );
+    }
+
+    @Override
+    public final boolean noneMatch( IndexedPredicate< INDEX, ? super VALUE_OUT > predicate )
+    {
+        return evaluate( MatchOps.makeRef( predicate, MatchOps.MatchKind.NONE ) );
     }
 
     @Override
