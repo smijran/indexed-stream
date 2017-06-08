@@ -5,6 +5,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 /**
  * Created by kszalkowski on 2017-06-07.
@@ -157,6 +158,12 @@ abstract class IndexedReferencePipeline< INDEX, VALUE_IN, VALUE_OUT >
     {
         A container = evaluate( ReductionOps.makeRef( collector ) );
         return (R)container;
+    }
+
+    @Override
+    public long count()
+    {
+        return collect( Collectors.toSet() ).size();
     }
 
     @Override

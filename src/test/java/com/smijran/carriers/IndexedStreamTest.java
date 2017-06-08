@@ -100,4 +100,24 @@ public class IndexedStreamTest
         assertThat( indexCaptor.getAllValues() ).contains( 0, 1, 2 );
         assertThat( captor.getAllValues() ).contains( 1, 2, 3 );
     }
+
+    @Test
+    public void testCount()
+    {
+        // Given
+        final long count = IndexedStream.of( 1, 2, 3 ).count();
+
+        // Then
+        assertThat( count ).isEqualTo( 3L );
+    }
+
+    @Test
+    public void testCountFilter()
+    {
+        // Given
+        final long count = IndexedStream.of( 1, 2, 3 ).filter( ( index, value ) -> index > 1 ).count();
+
+        // Then
+        assertThat( count ).isEqualTo( 1L );
+    }
 }

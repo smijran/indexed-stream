@@ -45,6 +45,8 @@ public interface IndexedStream< INDEX, VALUE >extends AutoCloseable
 
     < R, A > R collect( Collector< ? super VALUE, A, R > collector );
 
+    long count();
+
     void forEach( Consumer< ? super VALUE > consumer );
 
     void forEach( IndexedConsumer< INDEX, ? super VALUE > consumer );
