@@ -8,6 +8,7 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
+import org.assertj.core.util.Lists;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.testng.annotations.Test;
@@ -20,6 +21,17 @@ public class IndexedStreamTest
     {
         // Given
         final List< Integer > integers = IndexedStream.of( 1, 2, 3 ).collect( Collectors.toList() );
+
+        // Then
+        assertThat( integers ).contains( 1, 2, 3 );
+    }
+
+    @Test
+    public void testCollect2() throws Exception
+    {
+        // Given
+        final List< Integer > integers =
+            IndexedStream.of( 1, 2, 3 ).collect( Lists::newArrayList, List::add, ( a, b ) -> a.addAll( b ) );
 
         // Then
         assertThat( integers ).contains( 1, 2, 3 );

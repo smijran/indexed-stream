@@ -161,6 +161,14 @@ abstract class IndexedReferencePipeline< INDEX, VALUE_IN, VALUE_OUT >
     }
 
     @Override
+    public final < R > R collect( Supplier< R > supplier,
+        BiConsumer< R, ? super VALUE_OUT > accumulator,
+        BiConsumer< R, R > combiner )
+    {
+        return evaluate( ReductionOps.makeRef( supplier, accumulator, combiner ) );
+    }
+
+    @Override
     public VALUE_OUT reduce( VALUE_OUT identity, BinaryOperator< VALUE_OUT > accumulator )
     {
         return evaluate( ReductionOps.makeRef( identity, accumulator, accumulator ) );

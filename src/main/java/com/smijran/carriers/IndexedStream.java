@@ -42,6 +42,10 @@ public interface IndexedStream< INDEX, VALUE >extends AutoCloseable
 
     < R, A > R collect( Collector< ? super VALUE, A, R > collector );
 
+    < R > R collect( Supplier< R > supplier,
+        BiConsumer< R, ? super VALUE > accumulator,
+        BiConsumer< R, R > combiner );
+
     VALUE reduce( final VALUE identity, final BinaryOperator< VALUE > accumulator );
 
     Optional< VALUE > reduce( BinaryOperator< VALUE > accumulator );
