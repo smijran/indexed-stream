@@ -1,9 +1,9 @@
 package com.smijran.carriers;
 
+import java.util.Comparator;
 import java.util.Objects;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Predicate;
+import java.util.Optional;
+import java.util.function.*;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
@@ -158,6 +158,38 @@ abstract class IndexedReferencePipeline< INDEX, VALUE_IN, VALUE_OUT >
     {
         A container = evaluate( ReductionOps.makeRef( collector ) );
         return (R)container;
+    }
+
+    @Override
+    public VALUE_OUT reduce( VALUE_OUT identity, BinaryOperator< VALUE_OUT > accumulator )
+    {
+        return evaluate( ReductionOps.makeRef( identity, accumulator, accumulator ) );
+    }
+
+    @Override
+    public Optional< VALUE_OUT > reduce( BinaryOperator< VALUE_OUT > accumulator )
+    {
+        return evaluate( ReductionOps.makeRef( accumulator ) );
+    }
+
+    @Override
+    public < R > R reduce( R identity, BiFunction< R, ? super VALUE_OUT, R > accumulator,
+        BinaryOperator< R > combiner )
+    {
+        return evaluate( ReductionOps.makeRef( identity, accumulator, combiner ) );
+    }
+
+    @Override
+    public final Optional< VALUE_OUT > max( Comparator< ? super VALUE_OUT > comparator )
+    {
+        return reduce( BinaryOperator.maxBy( comparator ) );
+    }
+
+    @Override
+    public final Optional< VALUE_OUT > min( Comparator< ? super VALUE_OUT > comparator )
+    {
+        return reduce( BinaryOperator.minBy( comparator ) );
+
     }
 
     @Override

@@ -1,10 +1,7 @@
 package com.smijran.carriers;
 
-import java.util.Iterator;
 import java.util.*;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Predicate;
+import java.util.function.*;
 import java.util.stream.Collector;
 
 /**
@@ -44,6 +41,16 @@ public interface IndexedStream< INDEX, VALUE >extends AutoCloseable
     < R > IndexedStream< INDEX, R > map( IndexedFunction< INDEX, ? super VALUE, ? extends R > mapper );
 
     < R, A > R collect( Collector< ? super VALUE, A, R > collector );
+
+    VALUE reduce( final VALUE identity, final BinaryOperator< VALUE > accumulator );
+
+    Optional< VALUE > reduce( BinaryOperator< VALUE > accumulator );
+
+    < R > R reduce( R identity, BiFunction< R, ? super VALUE, R > accumulator, BinaryOperator< R > combiner );
+
+    Optional< VALUE > max( Comparator< ? super VALUE > comparator );
+
+    Optional< VALUE > min( Comparator< ? super VALUE > comparator );
 
     long count();
 

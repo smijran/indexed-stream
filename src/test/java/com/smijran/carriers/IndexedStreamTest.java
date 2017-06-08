@@ -1,14 +1,16 @@
 package com.smijran.carriers;
 
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import org.testng.annotations.Test;
+import static org.assertj.core.api.Java6Assertions.assertThat;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-import static org.assertj.core.api.Java6Assertions.assertThat;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Mockito;
+import org.testng.annotations.Test;
 
 public class IndexedStreamTest
 {
@@ -21,6 +23,59 @@ public class IndexedStreamTest
 
         // Then
         assertThat( integers ).contains( 1, 2, 3 );
+    }
+
+    @Test
+    public void testReduce() throws Exception
+    {
+        // Given
+        final Integer sum = IndexedStream.of( 1, 2, 3 ).reduce( 0, ( a, b ) -> a + b );
+
+        // Then
+        assertThat( sum ).isEqualTo( 6 );
+    }
+
+    @Test
+    public void testReduce2() throws Exception
+    {
+        // Given
+        final Optional< Integer > sum = IndexedStream.of( 1, 2, 3 ).reduce( ( a, b ) -> a + b );
+
+        // Then
+        assertThat( sum.isPresent() ).isTrue();
+        assertThat( sum.get() ).isEqualTo( 6 );
+    }
+
+    @Test
+    public void testReduce3() throws Exception
+    {
+        // Given
+        final Integer sum = IndexedStream.of( 1, 2, 3 ).reduce( 0, ( a, b ) -> a + b, ( a, b ) -> a + b );
+
+        // Then
+        assertThat( sum ).isEqualTo( 6 );
+    }
+
+    @Test
+    public void testMin() throws Exception
+    {
+        // Given
+        final Optional< Integer > min = IndexedStream.of( 1, 2, 3 ).min( Comparator.naturalOrder() );
+
+        // Then
+        assertThat( min.isPresent() ).isTrue();
+        assertThat( min.get() ).isEqualTo( 1 );
+    }
+
+    @Test
+    public void testMax() throws Exception
+    {
+        // Given
+        final Optional< Integer > max = IndexedStream.of( 1, 2, 3 ).max( Comparator.naturalOrder() );
+
+        // Then
+        assertThat( max.isPresent() ).isTrue();
+        assertThat( max.get() ).isEqualTo( 3 );
     }
 
     @Test
