@@ -58,7 +58,11 @@ public interface IndexedStream< INDEX, VALUE >extends AutoCloseable
 
     long count();
 
-    void forEach( Consumer< ? super VALUE > consumer );
+    Optional<VALUE> findFirst();
+
+    Optional<VALUE> findAny();
+
+    void forEach(Consumer< ? super VALUE > consumer );
 
     void forEach( IndexedConsumer< INDEX, ? super VALUE > consumer );
 

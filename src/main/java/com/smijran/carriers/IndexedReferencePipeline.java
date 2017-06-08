@@ -197,13 +197,24 @@ abstract class IndexedReferencePipeline< INDEX, VALUE_IN, VALUE_OUT >
     public final Optional< VALUE_OUT > min( Comparator< ? super VALUE_OUT > comparator )
     {
         return reduce( BinaryOperator.minBy( comparator ) );
-
     }
 
     @Override
     public long count()
     {
         return collect( Collectors.toSet() ).size();
+    }
+
+    @Override
+    public final Optional< VALUE_OUT > findFirst()
+    {
+        return evaluate( FindOps.makeRef( true ) );
+    }
+
+    @Override
+    public final Optional< VALUE_OUT > findAny()
+    {
+        return evaluate( FindOps.makeRef( false ) );
     }
 
     @Override

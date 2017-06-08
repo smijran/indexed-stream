@@ -17,6 +17,27 @@ public class IndexedStreamTest
 {
 
     @Test
+    public void testFindFirst() throws Exception
+    {
+        // Given
+        final Optional< Integer > found = IndexedStream.of( 1, 2, 3 ).findFirst();
+
+        // Then
+        assertThat( found.isPresent() ).isTrue();
+        assertThat( found.get() ).isEqualTo( 1 );
+    }
+
+    @Test
+    public void testFindAny() throws Exception
+    {
+        // Given
+        final Optional< Integer > found = IndexedStream.of( 1, 2, 3 ).findFirst();
+
+        // Then
+        assertThat( found.isPresent() ).isTrue();
+    }
+
+    @Test
     public void testCollect() throws Exception
     {
         // Given
